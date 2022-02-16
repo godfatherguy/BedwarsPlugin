@@ -1,26 +1,34 @@
 package org.godfather.bsolo.manager;
 
+import org.bukkit.scheduler.BukkitRunnable;
 import org.godfather.bsolo.Bedwars;
+import org.godfather.bsolo.manager.map.BlockManager;
 import org.godfather.bsolo.manager.players.PlayerManager;
 
 public class GameManager {
 
     private final Bedwars plugin;
     private final PlayerManager playerManager;
+    private final BlockManager blockManager;
     private GamePhases gamePhase;
 
     public GameManager(Bedwars plugin) {
         this.plugin = plugin;
         playerManager = new PlayerManager(this);
-        gamePhase = GamePhases.LOADING;
+        blockManager = new BlockManager();
+        setPhase(GamePhases.LOADING);
     }
 
     public Bedwars getInstance() {
         return plugin;
     }
 
-    public PlayerManager getPlayerManager(){
+    public PlayerManager getPlayerManager() {
         return playerManager;
+    }
+
+    public BlockManager getBlockManager() {
+        return blockManager;
     }
 
     public GamePhases getPhase() {
@@ -30,9 +38,20 @@ public class GameManager {
     public void setPhase(GamePhases gamePhase) {
         this.gamePhase = gamePhase;
         gamePhase.getConsumer().accept(this);
+        if (gamePhase == GamePhases.LOADING)
+            setPhase(GamePhases.WAITING);
+        else if (gamePhase == GamePhases.END) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    setPhase(GamePhases.LOADING);
+                }
+            }.runTaskLater(plugin, 120L);
+        }
     }
 
-    public void startGame() {
-        setPhase(GamePhases.INGAME);
+    public void reset() {
+        playerManager.reset();
+        blockManager.reset();
     }
 }

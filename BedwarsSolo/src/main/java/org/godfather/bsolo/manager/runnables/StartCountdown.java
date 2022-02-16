@@ -18,7 +18,7 @@ public class StartCountdown extends BukkitRunnable {
         }
         if (time == 0) {
             cancel();
-            gameManager.startGame();
+            gameManager.setPhase(GamePhases.INGAME);
             return;
 
         } else if (time % 10 == 0 || time == 10 || time <= 5) {

@@ -1,7 +1,13 @@
 package org.godfather.bsolo.manager;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.godfather.bsolo.manager.runnables.StartCountdown;
+import org.godfather.bsolo.utils.Helper;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public enum GamePhases {
@@ -20,6 +26,13 @@ public enum GamePhases {
 
     INGAME(gameManager -> {
         gameManager.getPlayerManager().getTeamsManager().setupRandomTeams();
+        for (UUID uuid : gameManager.getPlayerManager().getPlayersInGame()) {
+            Player player = Bukkit.getPlayer(uuid);
+            player.sendMessage(ChatColor.GREEN + "Partita iniziata!");
+            Helper.sendTitle(player, ChatColor.RED + "" + ChatColor.BOLD + "BEDWARS", ChatColor.YELLOW + "Partita iniziata!", 5, 40, 5);
+            player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
+            //todo teletrasportare
+        }
     }),
 
     END(gameManager -> {
