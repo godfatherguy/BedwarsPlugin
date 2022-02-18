@@ -11,6 +11,7 @@ public class GameManager {
     private final PlayerManager playerManager;
     private final BlockManager blockManager;
     private GamePhases gamePhase;
+    private int timecountdown=30;
 
     public GameManager(Bedwars plugin) {
         this.plugin = plugin;
@@ -21,6 +22,14 @@ public class GameManager {
 
     public Bedwars getInstance() {
         return plugin;
+    }
+
+    public int getTimecountdown(){
+        return timecountdown;
+    }
+
+    public void setTimecountdown(int timecountdown){
+        this.timecountdown = timecountdown;
     }
 
     public PlayerManager getPlayerManager() {

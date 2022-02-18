@@ -12,6 +12,7 @@ public class StartCountdown extends BukkitRunnable {
 
     @Override
     public void run() {
+        gameManager.setTimecountdown(time);
         if (gameManager.getPhase() != GamePhases.STARTING) {
             cancel();
             return;
