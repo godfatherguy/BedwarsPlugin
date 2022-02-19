@@ -3,6 +3,7 @@ package org.godfather.bsolo.manager;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.godfather.bsolo.Bedwars;
 import org.godfather.bsolo.manager.map.BlockManager;
+import org.godfather.bsolo.manager.map.MapManager;
 import org.godfather.bsolo.manager.players.PlayerManager;
 
 public class GameManager {
@@ -10,13 +11,16 @@ public class GameManager {
     private final Bedwars plugin;
     private final PlayerManager playerManager;
     private final BlockManager blockManager;
+    private final MapManager mapManager;
     private GamePhases gamePhase;
-    private int timecountdown=30;
+    private int timecountdown = 30;
 
     public GameManager(Bedwars plugin) {
         this.plugin = plugin;
         playerManager = new PlayerManager(this);
         blockManager = new BlockManager();
+        mapManager = new MapManager(this);
+        mapManager.setRandomMap();
         setPhase(GamePhases.LOADING);
     }
 
@@ -24,11 +28,11 @@ public class GameManager {
         return plugin;
     }
 
-    public int getTimecountdown(){
+    public int getTimecountdown() {
         return timecountdown;
     }
 
-    public void setTimecountdown(int timecountdown){
+    public void setTimecountdown(int timecountdown) {
         this.timecountdown = timecountdown;
     }
 
@@ -38,6 +42,10 @@ public class GameManager {
 
     public BlockManager getBlockManager() {
         return blockManager;
+    }
+
+    public MapManager getMapManager() {
+        return mapManager;
     }
 
     public GamePhases getPhase() {
@@ -62,5 +70,6 @@ public class GameManager {
     public void reset() {
         playerManager.reset();
         blockManager.reset();
+        mapManager.unload();
     }
 }

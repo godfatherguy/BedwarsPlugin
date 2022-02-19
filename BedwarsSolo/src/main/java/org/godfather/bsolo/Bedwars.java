@@ -5,27 +5,28 @@ import org.godfather.bsolo.listeners.PlayerInWorldEvent;
 import org.godfather.bsolo.listeners.PlayerLoginEvent;
 import org.godfather.bsolo.manager.GameManager;
 import org.godfather.bsolo.manager.GameScoreboard;
+import org.godfather.bsolo.manager.runnables.Tablist;
 import org.org.godfather.gboard.api.scoreboard.ScoreboardManager;
-import org.org.godfather.gboard.api.scoreboard.ScoreboardProvider;
 import org.org.godfather.gboard.api.scoreboard.adapter.ScoreboardAdapter;
-import org.org.godfather.gboard.nms.ScoreboardUtils;
+import org.org.godfather.gboard.nms.ScoreboardUtilsNMS;
 
 public class Bedwars extends JavaPlugin {
 
-    private final ScoreboardAdapter scoreboardAdapter = ScoreboardAdapter.builder(this, new ScoreboardUtils()).build();
+    private final GameManager gameManager = new GameManager(this);
+    private final ScoreboardAdapter scoreboardAdapter = ScoreboardAdapter.builder(this, new ScoreboardUtilsNMS()).build();
 
     public void onEnable() {
         saveDefaultConfig();
-        GameManager gameManager = new GameManager(this);
         GameScoreboard gameScoreboard = new GameScoreboard(gameManager);
-        new ScoreboardManager(this, (ScoreboardProvider) scoreboardAdapter, 5).start();
+        new ScoreboardManager(this, gameScoreboard, 5).start();
+        new Tablist(gameManager).runTaskTimer(this, 0L, 5L);
 
         getServer().getPluginManager().registerEvents(new PlayerLoginEvent(gameManager), this);
         getServer().getPluginManager().registerEvents(new PlayerInWorldEvent(gameManager), this);
     }
 
     public void onDisable() {
-
+        gameManager.reset();
     }
 
     public ScoreboardAdapter getAdapter(){

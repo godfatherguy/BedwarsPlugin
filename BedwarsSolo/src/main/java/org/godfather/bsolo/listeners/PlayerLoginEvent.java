@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.godfather.bsolo.manager.GameManager;
 import org.godfather.bsolo.manager.GamePhases;
+import org.godfather.bsolo.manager.runnables.Tablist;
 import org.godfather.bsolo.utils.Helper;
 
 public class PlayerLoginEvent implements Listener {
@@ -23,6 +24,7 @@ public class PlayerLoginEvent implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        Tablist.sendTablist(player, gameManager);
 
         switch (gameManager.getPhase()) {
             case LOADING:
@@ -52,6 +54,8 @@ public class PlayerLoginEvent implements Listener {
                 player.sendMessage(ChatColor.GRAY + "Sei entrato come spettatore!");
                 break;
         }
+
+        event.setJoinMessage(null);
     }
 
     @EventHandler
@@ -94,5 +98,7 @@ public class PlayerLoginEvent implements Listener {
         }
         if (gameManager.getPlayerManager().hasGameProfile(player))
             gameManager.getPlayerManager().removeGameProfile(player);
+
+        event.setQuitMessage(null);
     }
 }
