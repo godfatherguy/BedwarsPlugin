@@ -20,7 +20,6 @@ public class GameManager {
         playerManager = new PlayerManager(this);
         blockManager = new BlockManager();
         mapManager = new MapManager(this);
-        mapManager.setRandomMap();
         setPhase(GamePhases.LOADING);
     }
 

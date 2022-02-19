@@ -23,7 +23,7 @@ public class LocalGameMap implements GameMap {
     public boolean load(){
         if(isLoaded()) return true;
 
-        this.activeWorldFolder = new File(Bukkit.getWorldContainer().getParentFile(), sourceWorldFolder.getName() + "_active_" + System.currentTimeMillis());
+        this.activeWorldFolder = new File(Bukkit.getWorldContainer().getParentFile(), sourceWorldFolder.getName() + "_active");
 
         try{
             FileUtil.copy(sourceWorldFolder, activeWorldFolder);
@@ -56,4 +56,5 @@ public class LocalGameMap implements GameMap {
     public World getWorld() {
         return bukkitWorld;
     }
+
 }

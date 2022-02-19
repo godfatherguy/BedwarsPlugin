@@ -31,7 +31,8 @@ public enum GamePhases {
             player.sendMessage(ChatColor.GREEN + "Partita iniziata!");
             Helper.sendTitle(player, ChatColor.RED + "" + ChatColor.BOLD + "BEDWARS", ChatColor.YELLOW + "Partita iniziata!", 5, 40, 5);
             player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
-            //todo teletrasportare
+            player.teleport(gameManager.getMapManager().getMap().getSpawnLocation(gameManager.getPlayerManager().getGameProfile(player).getTeam()));
+            //todo givvare gli items
         }
     }),
 

@@ -32,6 +32,7 @@ public class PlayerLoginEvent implements Listener {
                 player.kickPlayer(ChatColor.RED + "Gioco in riavvio... Attendi!");
                 break;
             case WAITING:
+                player.teleport(gameManager.getMapManager().getMap().getLobbyLocation());
                 gameManager.getPlayerManager().getPlayersInGame().add(player.getUniqueId());
                 Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(ChatColor.GRAY
                         + p.getName() + ChatColor.YELLOW + " è entrato (" + ChatColor.AQUA + gameManager.getPlayerManager().getPlayersInGame().size()
@@ -40,6 +41,7 @@ public class PlayerLoginEvent implements Listener {
                     gameManager.setPhase(GamePhases.STARTING);
                 break;
             case STARTING:
+                player.teleport(gameManager.getMapManager().getMap().getLobbyLocation());
                 if (gameManager.getPlayerManager().getPlayersInGame().size() == gameManager.getPlayerManager().getMaxPlayers()) {
                     player.kickPlayer(ChatColor.RED + "Il gioco è pieno. Attendi!");
                     return;
@@ -50,6 +52,7 @@ public class PlayerLoginEvent implements Listener {
                         + ChatColor.YELLOW + "/" + ChatColor.AQUA + gameManager.getPlayerManager().getMaxPlayers() + ChatColor.YELLOW + ")!"));
                 break;
             case INGAME:
+                player.teleport(gameManager.getMapManager().getMap().getSpectatorLocation());
                 gameManager.getPlayerManager().getSpectators().add(player.getUniqueId());
                 player.sendMessage(ChatColor.GRAY + "Sei entrato come spettatore!");
                 break;

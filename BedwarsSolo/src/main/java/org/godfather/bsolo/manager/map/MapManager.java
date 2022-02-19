@@ -13,7 +13,6 @@ public class MapManager {
     private final GameManager gameManager;
     private Maps map;
     private GameMap gameMap;
-    private World actualWorld;
 
     public MapManager(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -29,7 +28,6 @@ public class MapManager {
         }
 
         gameMap = new LocalGameMap(gameMapsFolder, map.getName(), true);
-        actualWorld = gameMap.getWorld();
     }
 
     public void setRandomMap() {
@@ -41,17 +39,13 @@ public class MapManager {
         return map;
     }
 
-    public World getWorld() {
-        return actualWorld;
-    }
-
     public void unload() {
-        File[] files = new File(actualWorld.getWorldFolder().getAbsolutePath() + "/playerdata/").listFiles();
+        File[] files = new File(gameMap.getWorld().getWorldFolder().getAbsolutePath() + "/playerdata/").listFiles();
         if (files == null) return;
         for (File file : files) {
             file.delete();
         }
-        File[] files2 = new File(actualWorld.getWorldFolder().getAbsolutePath() + "/stats/").listFiles();
+        File[] files2 = new File(gameMap.getWorld().getWorldFolder().getAbsolutePath() + "/stats/").listFiles();
         if (files2 == null) return;
         for (File file : files2) {
             file.delete();

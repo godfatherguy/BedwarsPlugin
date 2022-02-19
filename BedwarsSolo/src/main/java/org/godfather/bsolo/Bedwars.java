@@ -20,6 +20,7 @@ public class Bedwars extends JavaPlugin {
         GameScoreboard gameScoreboard = new GameScoreboard(gameManager);
         new ScoreboardManager(this, gameScoreboard, 5).start();
         new Tablist(gameManager).runTaskTimer(this, 0L, 5L);
+        gameManager.getMapManager().setRandomMap();
 
         getServer().getPluginManager().registerEvents(new PlayerLoginEvent(gameManager), this);
         getServer().getPluginManager().registerEvents(new PlayerInWorldEvent(gameManager), this);
