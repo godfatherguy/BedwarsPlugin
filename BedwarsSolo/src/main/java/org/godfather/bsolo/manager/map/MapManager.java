@@ -13,6 +13,7 @@ public class MapManager {
     private final GameManager gameManager;
     private Maps map;
     private GameMap gameMap;
+    private static World world;
 
     public MapManager(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -28,6 +29,7 @@ public class MapManager {
         }
 
         gameMap = new LocalGameMap(gameMapsFolder, map.getName(), true);
+        world = gameMap.getWorld();
     }
 
     public void setRandomMap() {
@@ -37,6 +39,10 @@ public class MapManager {
 
     public Maps getMap() {
         return map;
+    }
+
+    public static World getWorld() {
+        return world;
     }
 
     public void unload() {

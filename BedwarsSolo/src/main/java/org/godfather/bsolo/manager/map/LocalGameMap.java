@@ -14,47 +14,46 @@ public class LocalGameMap implements GameMap {
     private File activeWorldFolder;
     private World bukkitWorld;
 
-    public LocalGameMap(File worldfolder, String worldname, boolean loadOnInit){
+    public LocalGameMap(File worldfolder, String worldname, boolean loadOnInit) {
         this.sourceWorldFolder = new File(worldfolder, worldname);
 
-        if(loadOnInit) load();
+        if (loadOnInit) load();
     }
 
-    public boolean load(){
-        if(isLoaded()) return true;
+    public boolean load() {
+        if (isLoaded()) return true;
 
-        this.activeWorldFolder = new File(Bukkit.getWorldContainer().getParentFile(), sourceWorldFolder.getName() + "_active");
+        this.activeWorldFolder = new File(Bukkit.getWorldContainer().getParentFile(), sourceWorldFolder.getName() + "_active_" + System.currentTimeMillis());
 
-        try{
+        try {
             FileUtil.copy(sourceWorldFolder, activeWorldFolder);
-        } catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         this.bukkitWorld = Bukkit.createWorld(new WorldCreator(activeWorldFolder.getName()));
-        if(bukkitWorld != null) this.bukkitWorld.setAutoSave(false);
+        if (bukkitWorld != null) this.bukkitWorld.setAutoSave(false);
         return isLoaded();
     }
 
-    public void unload(){
-        if(bukkitWorld != null) Bukkit.unloadWorld(bukkitWorld, false);
-        if(activeWorldFolder != null) FileUtil.delete(activeWorldFolder);
+    public void unload() {
+        if (bukkitWorld != null) Bukkit.unloadWorld(bukkitWorld, false);
+        if (activeWorldFolder != null) FileUtil.delete(activeWorldFolder);
 
         bukkitWorld = null;
         activeWorldFolder = null;
     }
 
-    public boolean restoreFromSource(){
+    public boolean restoreFromSource() {
         unload();
         return load();
     }
 
-    public boolean isLoaded(){
+    public boolean isLoaded() {
         return this.bukkitWorld != null;
     }
 
     public World getWorld() {
         return bukkitWorld;
     }
-
 }
